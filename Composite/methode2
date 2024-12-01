@@ -1,0 +1,68 @@
+public interface Marchandise {
+    double getPrice();
+}
+
+public class Telephone implements Marchandise {
+    private double price;
+
+    public Telephone(double price) {
+        this.price = price;
+    }
+
+    @Override
+    public double getPrice() {
+        return this.price;
+    }
+}
+public class Ordinateur implements Marchandise {
+    private double price;
+
+    public Ordinateur(double price) {
+        this.price = price;
+    }
+
+    @Override
+    public double getPrice() {
+        return this.price;
+    }
+}
+import java.util.ArrayList;
+import java.util.List;
+
+public class Boite implements Marchandise {
+    private List<Marchandise> contenu = new ArrayList<>();
+
+    public void ajouter(Marchandise marchandise) {
+        contenu.add(marchandise);
+    }
+
+    @Override
+    public double getPrice() {
+        return contenu.stream().mapToDouble(Marchandise::getPrice).sum();
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        // Création de marchandises simples
+        Telephone tel1 = new Telephone(300);
+        Ordinateur ordi1 = new Ordinateur(1000);
+
+        // Création de boîtes
+        Boite boite1 = new Boite();
+        boite1.ajouter(tel1);
+        boite1.ajouter(ordi1);
+
+        Boite boite2 = new Boite();
+        boite2.ajouter(new Telephone(200));
+
+        // Boîte contenant une autre boîte
+        Boite grandeBoite = new Boite();
+        grandeBoite.ajouter(boite1);
+        grandeBoite.ajouter(boite2);
+
+        // Calcul des prix
+        System.out.println("Prix de boîte 1 : " + boite1.getPrice());
+        System.out.println("Prix de boîte 2 : " + boite2.getPrice());
+        System.out.println("Prix de la grande boîte : " + grandeBoite.getPrice());
+    }
+}
